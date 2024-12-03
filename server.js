@@ -5,11 +5,18 @@ const port = process.env.PORT || 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Log all incoming requests
+app.use((req, res, next) => {
+    console.log(`Incoming request: ${req.method} ${req.url}`);
+    next();
+});
+
 // Route to handle incoming names
 app.post('/save-names', (req, res) => {
     const { name1, name2 } = req.body;
 
     if (!name1 || !name2) {
+        console.log('Invalid input: One or both names are missing.');
         return res.status(400).send('Both names are required');
     }
 
